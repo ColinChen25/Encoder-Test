@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,10 +28,14 @@ public class Robot extends IterativeRobot {
 	Joystick stick;
     TalonSRX talon;
     double distance;
-    boolean direction;
+    double speed=0.2;
     Relay relay;
     boolean run;
     boolean speedReading;
+    boolean trigger;
+	boolean toggleState = false;
+	boolean lastTrigger = false;
+	boolean button9 =false;
     
 	
     /**
@@ -85,19 +90,57 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	encoder.getDistance();
     	encoder.getDirection();
-    	if(stick.getRawButton(1))
-    		run=!run;
-    	else if(stick.getRawButton(5)){
-        	talon.set(0.1);
-        }//set the motor move forward
-        do{
-        	if(encoder.getDistance()>100){
+    	
+    	trigger = stick.getRawButton(1);
+        if(trigger && toggleState == false && !lastTrigger)
+        {
+        	speed=-1*speed;
+    	    talon.set(speed);;
+        	toggleState = true;
+        }
+        else if(trigger && toggleState == true && !lastTrigger)
+        {
+        	speed=-1*speed;
+    	    talon.set(speed);
+        	toggleState = false;
+        }
+        lastTrigger = stick.getRawButton(1);
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	/*if(stick.getRawButton(1)){
+    		speed=-1*speed;
+    	    talon.set(speed);
+    	    }*/
+    	if(stick.getRawButton(5)){
+        	talon.set(speed);
+        	
+        }//set the motor move forward or backward
+    	
+    	if(stick.getRawButton(2)){
+    		talon.set(0);
+    		button9=false;
+    	}//stop
+        
+        	/*if(encoder.getDistance()>100){
         		talon.set(-0.2);
         	}
         	if(encoder.getDistance()<-100){
         		talon.set(0.2);
-        	}
-        }while(run);
+        	}*/
+        if(stick.getRawButton(3)){
+        	speedReading=!speedReading;
+        }
+        	
+        
         //limit the motor to switch its direction when the distance reading of encoder reach 100 or -100.
         
         if(stick.getRawButton(6)){
@@ -111,18 +154,40 @@ public class Robot extends IterativeRobot {
         	speedReading=true;
         }
         
-        /*
-         * modified the code so that the motor can go back and forward with in a range of encoder distance reading
-add function to stop the motor moving 
-add function to test and show the encoder rate reading when the motor is at full speed and half speed
-         */
+        if(stick.getRawButton(11)){
+        	speed=speed+0.05;
+        	talon.set(speed);
+        }//speed up
+        if(stick.getRawButton(12)){
+        	speed=speed-0.05;
+        	talon.set(speed);
+        }//slow down
         
-        if(encoder.getDirection()){
+        if(stick.getRawButton(10)){
+        	encoder.reset();
+        	talon.set(0.75);
+        	
+        }
+        
+        	if(encoder.getDistance()>10000){
+        		Timer.delay(1);
+        		talon.set(-1);
+        		
+        	}
+        	else if(encoder.getDistance()<0){
+        		talon.set(0);
+        		
+        	}
+        	
+        
+        
+        
+        /*if(encoder.getDirection()){
     		relay.set(Relay.Value.kForward);
     	}
     	else{
     		relay.set(Relay.Value.kReverse);
-    	}
+    	}*/
         // the light indicate the direction of the motor(on=forward)
         
         if(!speedReading){
