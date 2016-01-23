@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
@@ -30,6 +29,8 @@ public class Robot extends IterativeRobot {
     double distance;
     boolean direction;
     Relay relay;
+    boolean run;
+    boolean speedReading;
     
 	
     /**
@@ -84,30 +85,56 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	encoder.getDistance();
     	encoder.getDirection();
-        if(stick.getRawButton(1)){
-        	if(encoder.getDistance()<100){
-        		talon.set(1);
+    	if(stick.getRawButton(1))
+    		run=!run;
+    	else if(stick.getRawButton(5)){
+        	talon.set(0.1);
+        }//set the motor move forward
+        do{
+        	if(encoder.getDistance()>100){
+        		talon.set(-0.2);
         	}
-        	else if(encoder.getDistance()<300 && encoder.getDistance()>100){
-        		talon.set(-1);
+        	if(encoder.getDistance()<-100){
+        		talon.set(0.2);
         	}
-        	else if(encoder.getDistance()>300 && encoder.getDistance()<1000){
-        		talon.set(0.8);
-        	}
-        	else if(encoder.getDistance()>1000 && encoder.getDistance()<2000){
-        		talon.set(-0.8);
-        	}
-        	if(encoder.getDirection()){
-        		relay.set(Relay.Value.kForward);
-        	}
-        	else{
-        		relay.set(Relay.Value.kReverse);
-        	}
-        		
+        }while(run);
+        //limit the motor to switch its direction when the distance reading of encoder reach 100 or -100.
+        
+        if(stick.getRawButton(6)){
+        	run=false;
+        	talon.set(1);
+        	speedReading=true;
         }
-        System.out.println(encoder.getDistance());
+        if(stick.getRawButton(4)){
+        	run=false;
+        	talon.set(0.5);
+        	speedReading=true;
+        }
+        
+        /*
+         * modified the code so that the motor can go back and forward with in a range of encoder distance reading
+add function to stop the motor moving 
+add function to test and show the encoder rate reading when the motor is at full speed and half speed
+         */
+        
+        if(encoder.getDirection()){
+    		relay.set(Relay.Value.kForward);
+    	}
+    	else{
+    		relay.set(Relay.Value.kReverse);
+    	}
+        // the light indicate the direction of the motor(on=forward)
+        
+        if(!speedReading){
+        	System.out.println(encoder.getDistance());
+        }
+        else{
+        	System.out.println(encoder.getRate());
+        }
+        //swtich between distance reading and speed(rate) reading
+        
+        SmartDashboard.putNumber("Encoder speed reading",encoder.getRate());
     }
-    //4 stage of moving forward and backward. the light indicate the direction of the motor(on=forward)
     /**
      * This function is called periodically during test mode
      */
