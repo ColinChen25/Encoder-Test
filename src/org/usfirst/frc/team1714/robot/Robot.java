@@ -87,17 +87,14 @@ public class Robot extends IterativeRobot {
     	encoder.getDistance();
     	encoder.getDirection();
         if(stick.getRawButton(1)){
-        	if(encoder.getDistance()>100){
+        	if(encoder.getDistance()<100){
         		talon.set(1);
-        		
         	}
         	else if(encoder.getDistance()<300 && encoder.getDistance()>100){
         		talon.set(-1);
-        		
         	}
         	else if(encoder.getDistance()>300 && encoder.getDistance()<1000){
         		talon.set(0.8);
-        		
         	}
         	else if(encoder.getDistance()>1000 && encoder.getDistance()<2000){
         		talon.set(-0.8);
