@@ -107,15 +107,6 @@ public class Robot extends IterativeRobot {
         lastTrigger = stick.getRawButton(1);
     	
     	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     	/*if(stick.getRawButton(1)){
     		speed=-1*speed;
     	    talon.set(speed);
@@ -129,8 +120,7 @@ public class Robot extends IterativeRobot {
     		talon.set(0);
     		button9=false;
     	}//stop
-        
-        	/*if(encoder.getDistance()>100){
+            /*if(encoder.getDistance()>100){
         		talon.set(-0.2);
         	}
         	if(encoder.getDistance()<-100){
@@ -139,9 +129,6 @@ public class Robot extends IterativeRobot {
         if(stick.getRawButton(3)){
         	speedReading=!speedReading;
         }
-        	
-        
-        //limit the motor to switch its direction when the distance reading of encoder reach 100 or -100.
         
         if(stick.getRawButton(6)){
         	run=false;
@@ -166,22 +153,16 @@ public class Robot extends IterativeRobot {
         if(stick.getRawButton(10)){
         	encoder.reset();
         	talon.set(0.75);
-        	
         }
         
         	if(encoder.getDistance()>10000){
-        		Timer.delay(1);
-        		talon.set(-1);
-        		
+        	Timer.delay(1);
+        	talon.set(-1);
         	}
         	else if(encoder.getDistance()<0){
-        		talon.set(0);
-        		
-        	}
-        	
-        
-        
-        
+        	talon.set(0);
+            }
+      
         /*if(encoder.getDirection()){
     		relay.set(Relay.Value.kForward);
     	}
@@ -192,9 +173,11 @@ public class Robot extends IterativeRobot {
         
         if(!speedReading){
         	System.out.println(encoder.getDistance());
+        	relay.set(Relay.Value.kForward);
         }
         else{
         	System.out.println(encoder.getRate());
+        	relay.set(Relay.Value.kReverse);
         }
         //swtich between distance reading and speed(rate) reading
         
