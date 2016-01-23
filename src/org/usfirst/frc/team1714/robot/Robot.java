@@ -89,20 +89,26 @@ public class Robot extends IterativeRobot {
         if(stick.getRawButton(1)){
         	if(encoder.getDistance()>100){
         		talon.set(1);
-        		relay.set(Relay.Value.kForward);
+        		
         	}
         	else if(encoder.getDistance()<300 && encoder.getDistance()>100){
         		talon.set(-1);
-        		relay.set(Relay.Value.kReverse);
+        		
         	}
         	else if(encoder.getDistance()>300 && encoder.getDistance()<1000){
         		talon.set(0.8);
-        		relay.set(Relay.Value.kForward);
+        		
         	}
         	else if(encoder.getDistance()>1000 && encoder.getDistance()<2000){
         		talon.set(-0.8);
+        	}
+        	if(encoder.getDirection()){
+        		relay.set(Relay.Value.kForward);
+        	}
+        	else{
         		relay.set(Relay.Value.kReverse);
         	}
+        		
         }
     }
     //4 stage of moving forward and backward. the light indicate the direction of the motor(on=forward)
