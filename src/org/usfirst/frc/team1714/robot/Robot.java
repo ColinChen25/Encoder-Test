@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
-
+import edu.wpi.first.wpilibj.Relay;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,6 +30,7 @@ public class Robot extends IterativeRobot {
     TalonSRX talon;
     double distance;
     boolean direction;
+    Relay relay;
     
 	
     /**
@@ -46,6 +47,7 @@ public class Robot extends IterativeRobot {
     	stick = new Joystick(0);
     	talon = new TalonSRX(0);
     	encoder.reset();
+    	relay = new Relay(0);
     }
     
 	/**
@@ -85,10 +87,25 @@ public class Robot extends IterativeRobot {
     	encoder.getDistance();
     	encoder.getDirection();
         if(stick.getRawButton(1)){
-        	
+        	if(encoder.getDistance()>100){
+        		talon.set(1);
+        		relay.set(Relay.Value.kForward);
+        	}
+        	else if(encoder.getDistance()<300 && encoder.getDistance()>100){
+        		talon.set(-1);
+        		relay.set(Relay.Value.kReverse);
+        	}
+        	else if(encoder.getDistance()>300 && encoder.getDistance()<1000){
+        		talon.set(0.8);
+        		relay.set(Relay.Value.kForward);
+        	}
+        	else if(encoder.getDistance()>1000 && encoder.getDistance()<2000){
+        		talon.set(-0.8);
+        		relay.set(Relay.Value.kReverse);
+        	}
         }
     }
-    
+    //4 stage of moving forward and backward. the light indicate the direction of the motor(on=forward)
     /**
      * This function is called periodically during test mode
      */
