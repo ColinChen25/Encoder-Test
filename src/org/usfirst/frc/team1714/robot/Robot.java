@@ -25,7 +25,6 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
     Encoder encoder;
-    RobotDrive myRobot;
 	Joystick stick;
     TalonSRX talon;
     double distance;
@@ -43,7 +42,6 @@ public class Robot extends IterativeRobot {
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto choices", chooser);
         encoder = new Encoder(3,4);
-        myRobot = new RobotDrive(0,1);
     	stick = new Joystick(0);
     	talon = new TalonSRX(0);
     	encoder.reset();
@@ -107,6 +105,7 @@ public class Robot extends IterativeRobot {
         	}
         		
         }
+        System.out.println(encoder.getDistance());
     }
     //4 stage of moving forward and backward. the light indicate the direction of the motor(on=forward)
     /**
