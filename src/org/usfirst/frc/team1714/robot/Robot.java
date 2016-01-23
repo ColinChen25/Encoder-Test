@@ -25,7 +25,7 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
     Encoder encoder;
-    RobotDrive myRobot;
+    //RobotDrive myRobot;
 	Joystick stick;
     TalonSRX talon;
     double distance;
@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot {
         chooser.addObject("My Auto", customAuto);
         SmartDashboard.putData("Auto choices", chooser);
         encoder = new Encoder(3,4);
-        myRobot = new RobotDrive(0,1);
+      //  myRobot = new RobotDrive(0,1);
     	stick = new Joystick(0);
     	talon = new TalonSRX(0);
     	encoder.reset();
