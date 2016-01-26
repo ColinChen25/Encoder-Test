@@ -91,7 +91,7 @@ public class Robot extends IterativeRobot {
     	encoder.getDistance();
     	encoder.getDirection();
     	
-    	trigger = stick.getRawButton(1);
+    	/*trigger = stick.getRawButton(1);
         if(trigger && toggleState == false && !lastTrigger)
         {
         	speed=-1*speed;
@@ -107,10 +107,10 @@ public class Robot extends IterativeRobot {
         lastTrigger = stick.getRawButton(1);
     	
     	
-    	/*if(stick.getRawButton(1)){
+    	if(stick.getRawButton(1)){
     		speed=-1*speed;
     	    talon.set(speed);
-    	    }*/
+    	    }
     	if(stick.getRawButton(5)){
         	talon.set(speed);
         	
@@ -120,15 +120,12 @@ public class Robot extends IterativeRobot {
     		talon.set(0);
     		button9=false;
     	}//stop
-            /*if(encoder.getDistance()>100){
+            if(encoder.getDistance()>100){
         		talon.set(-0.2);
         	}
         	if(encoder.getDistance()<-100){
         		talon.set(0.2);
-        	}*/
-        if(stick.getRawButton(3)){
-        	speedReading=!speedReading;
-        }
+        	}
         
         if(stick.getRawButton(6)){
         	run=false;
@@ -148,20 +145,25 @@ public class Robot extends IterativeRobot {
         if(stick.getRawButton(12)){
         	speed=speed-0.05;
         	talon.set(speed);
-        }//slow down
+        }*/
+        //slow down
         
         if(stick.getRawButton(10)){
         	encoder.reset();
         	talon.set(0.75);
         }
         
-        	if(encoder.getDistance()>10000){
+        if(encoder.getDistance()>10000){
         	Timer.delay(1);
         	talon.set(-1);
-        	}
-        	else if(encoder.getDistance()<0){
+        }
+        else if(encoder.getDistance()<0){
         	talon.set(0);
-            }
+        }
+        	
+        if(stick.getRawButton(3)){
+           	speedReading=!speedReading;
+        }
       
         /*if(encoder.getDirection()){
     		relay.set(Relay.Value.kForward);
@@ -181,7 +183,7 @@ public class Robot extends IterativeRobot {
         }
         //swtich between distance reading and speed(rate) reading
         
-        SmartDashboard.putNumber("Encoder speed reading",encoder.getRate());
+        //SmartDashboard.putNumber("Encoder speed reading",encoder.getRate());
     }
     /**
      * This function is called periodically during test mode
